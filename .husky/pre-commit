@@ -1,0 +1,36 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "🛡️ Synexus Anti-Cheat: Running Pre-Commit Checks..."
+
+if git diff --cached --name-only | grep -E "node_modules/|\.env"; then
+  echo "❌ ERROR: You are trying to commit node_modules or a .env file."
+  echo "⚠️ Add them to your .gitignore and unstage them before committing."
+  exit 1
+fi
+
+npx lint-staged
+if [ $? -ne 0 ]; then
+  echo "❌ ERROR: ESLint or Prettier failed. Fix your syntax errors."
+  exit 1
+fi
+
+npx @secretlint/secretlint "$(git diff --cached --name-only)"
+if [ $? -ne 0 ]; then
+  echo "❌ ERROR: Potential API Key or Secret detected in your commit!"
+  echo "⚠️ Remove the secret and use environment variables instead."
+  exit 1
+fi
+
+COMPULSORY_FILES="test-config.json .cursorrules .secretlintrc.json .husky/pre-commit .husky/commit-msg .github/workflows/synexus-guard.yml"
+
+for FILE in $COMPULSORY_FILES; do
+  if [ ! -f "$FILE" ]; then
+    echo "❌ ERROR: Compulsory file missing: $FILE"
+    echo "⚠️ Synexus Anti-Cheat requires this file to remain in the repository."
+    echo "💡 Run this command to restore it: git checkout HEAD -- $FILE"
+    exit 1
+  fi
+done
+
+echo "✅ All checks passed. Commit authorized."

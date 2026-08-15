@@ -1,0 +1,12 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+MSG_FILE=$1
+COMMIT_MSG=$(cat $MSG_FILE)
+
+SYNEXUS_SIG="[Synexus-Auth-Code-Verified]"
+
+if ! grep -q "$SYNEXUS_SIG" "$MSG_FILE"; then
+  echo "" >> "$MSG_FILE"
+  echo "$SYNEXUS_SIG" >> "$MSG_FILE"
+fi

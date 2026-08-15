@@ -1,0 +1,31 @@
+name: Synexus Shield Server Guard
+
+on: [push]
+
+jobs:
+  verify-commit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Verify VS Code Signature
+        run: |
+          # Check the commit message of the latest push
+          LATEST_MSG=$(git log -1 --pretty=%B)
+          
+          if [[ "$LATEST_MSG" != *"[Synexus-Auth-Code-Verified]"* ]]; then
+            echo "::error::🚨 COMMIT REJECTED: Missing Synexus VS Code Signature."
+            echo "You bypassed the local Git hooks or uploaded via the web interface."
+            echo "You must commit your code using the official VS Code environment."
+            exit 1
+          fi
+
+      - name: Verify Compulsory Files Exist
+        run: |
+          if [ ! -f ".cursorrules" ]; then
+            echo "::error::🚨 TAMPER ALERT: You deleted the compulsory .cursorrules file."
+            exit 1
+          fi
