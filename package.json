@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "start-hackathon": "node synexus-init.js",
     "prepare": "husky install",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
