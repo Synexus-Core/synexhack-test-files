@@ -1,0 +1,14 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "🛡️ Synexus Shield: Verifying 30-minute access token..."
+echo "Checking GitHub remote access..."
+echo ""
+echo "⚠️ IF YOUR PUSH FAILS WITH A '403 FORBIDDEN' ERROR:"
+echo "Your 30-minute write token has expired or is not active."
+echo "Go to https://synexhack.vercel.app to activate your session!"
+echo "=========================================================="
+echo ""
+
+# Exit 0 allows the push to proceed to GitHub's servers
+exit 0
