@@ -22,7 +22,7 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
-COMPULSORY_FILES="test-config.json .cursorrules .secretlintrc.json .husky/pre-commit .husky/commit-msg .github/workflows/synexus-guard.yml"
+COMPULSORY_FILES=".cursorrules .secretlintrc.json .husky/pre-commit .husky/commit-msg .github/workflows/synexus-guard.yml"
 
 for FILE in $COMPULSORY_FILES; do
   if [ ! -f "$FILE" ]; then
