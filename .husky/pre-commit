@@ -15,14 +15,17 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
-npx @secretlint/secretlint "$(git diff --cached --name-only)"
-if [ $? -ne 0 ]; then
-  echo "❌ ERROR: Potential API Key or Secret detected in your commit!"
-  echo "⚠️ Remove the secret and use environment variables instead."
-  exit 1
+STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACM | tr '\n' ' ')
+if [ -n "$STAGED_FILES" ]; then
+  npx @secretlint/secretlint $STAGED_FILES
+  if [ $? -ne 0 ]; then
+    echo "❌ ERROR: Potential API Key or Secret detected in your commit!"
+    echo "⚠️ Remove the secret and use environment variables instead."
+    exit 1
+  fi
 fi
 
-COMPULSORY_FILES=".cursorrules .secretlintrc.json .husky/pre-commit .husky/commit-msg .github/workflows/synexus-guard.yml"
+COMPULSORY_FILES=".cursorrules .secretlintrc.json .husky/pre-commit .husky/commit-msg .github/workflows/synexus-guard.yml synexus-init.js"
 
 for FILE in $COMPULSORY_FILES; do
   if [ ! -f "$FILE" ]; then

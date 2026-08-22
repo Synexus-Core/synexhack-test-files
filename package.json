@@ -25,5 +25,11 @@
     "**/*.{json,md,yml,html,css}": [
       "prettier --write"
     ]
+  },
+  "prettier": {
+    "endOfLine": "auto",
+    "semi": true,
+    "singleQuote": true,
+    "trailingComma": "es5"
   }
 }
