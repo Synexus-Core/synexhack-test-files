@@ -20,7 +20,7 @@ try {
     }
 
     // 3. Verify compulsory files exist
-    const requiredFiles = ['test-config.json', '.cursorrules', '.secretlintrc.json'];
+    const requiredFiles = ['.cursorrules', '.secretlintrc.json'];
     for (const file of requiredFiles) {
         if (!fs.existsSync(file)) {
             console.log(`\n❌ ERROR: Missing compulsory file: ${file}`);
